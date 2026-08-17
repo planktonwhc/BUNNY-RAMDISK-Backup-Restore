@@ -3,7 +3,7 @@
 
 Pulls activation files from the SSH ramdisk (device must be booted to ramdisk
 with filesystems mounted) and saves a backup zip:
-  ~/Library/Application Support/BUNNY RAMDISK/Backup/0x<ECID>.zip
+  ~/BUNNY RAMDISK/Backup/0x<ECID>.zip
 
 Usage:
   python3 bunny_backup.py
@@ -13,7 +13,27 @@ import os
 import sys
 import time
 
-CORE = '/Users/bunny.cia/Documents/BUNNY RAMDISK/BUNNY RAMDISK 2.app/Contents/Resources/core.py'
+
+def _find_core():
+    env = os.environ.get('BUNNY_CORE', '').strip()
+    if env and os.path.exists(env):
+        return env
+    candidates = [
+        '/Users/bunny.cia/Documents/BUNNY RAMDISK/BUNNY RAMDISK 2.app/Contents/Resources/core.py',
+        '/Users/bunny.cia/BUNNY RAMDISK/BUNNY RAMDISK 2.app/Contents/Resources/core.py',
+        '/Applications/BUNNY RAMDISK.app/Contents/Resources/core.py',
+        os.path.expanduser('~/BUNNY RAMDISK/GUI/core.py'),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return ''
+
+
+CORE = _find_core()
+if not CORE:
+    sys.exit('core.py not found - set BUNNY_CORE=/path/to/core.py')
+
 spec = importlib.util.spec_from_file_location('bunnycore', CORE)
 core = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(core)
