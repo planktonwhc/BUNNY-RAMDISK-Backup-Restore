@@ -127,7 +127,3 @@ python3 bunny_restore.py ~/BUNNY\ RAMDISK/Backup/0x<ECID>.zip
 
 ## ☕ Buy Me a Coffee
 
-If this tool helped you, consider buying me a coffee:
-
-- **Buy Me a Coffee:** https://www.buymeacoffee.com/bunnyciaa
-- **PayPal:** https://www.paypal.com/paypalme/bunnyciaa
